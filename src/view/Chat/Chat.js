@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useNavigate } from "react-router-dom"
+import styles from "./chat.module.css"
 
 const WebSocketType = {
     Error: 0, //错误
@@ -37,12 +38,14 @@ const Chat = () => {
             //#todo 这种写法有问题，可能在并发上
             // setMessages([...messages, { title: title, data: msg.data }]);
             setMessages(prevMessages => [...prevMessages, { title: title, data: msg.data }]);
+            scrollToBottom();
             setMessage("")
         })
         newSocket.on(WebSocketType.SingleChat, (msg) => {
             var title = msg.user ? msg.user.username : "广播"
             console.log(title + " : " + msg.data)
             setMessages(prevMessages => [...prevMessages, { title: title, data: msg.data }]);
+            scrollToBottom();
             setMessage("")
         })
 
@@ -83,36 +86,44 @@ const Chat = () => {
         //     setMessage('');
         // }
     };
+    const listRef = useRef(null);
     function createMessage(data, to) {
         return {
             data,
             to
         }
     }
+    const scrollToBottom = () => {
+        if (listRef.current) {
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
+    };
 
     return (
-        <div>
+        <div className={styles.main}>
             <h2>实时聊天</h2>
-            <form onSubmit={handleSubmit}>
+
+            <ul className={styles.return} ref={listRef}>
+                {messages.map((msg, index) => (
+                    <li key={index}>&gt; {msg.title}  :  {msg.data}</li>
+                ))}
+            </ul>
+
+            <form onSubmit={handleSubmit} className={styles.message}>
                 <input
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="请输入消息..."
+                    placeholder="You want to say...?"
                 />
-                <button type="submit">发送</button>
+                <select value={selector} onChange={(e) => SetSelector(e.target.value)}>
+                    <option value="all">all</option>
+                    {onlineList.map(item =>
+                        <option key={item.username} value={item.username}>{item.username}</option>
+                    )}
+                </select>
+                <button type="submit" className={styles.button}>send!</button>
             </form>
-            <ul>
-                {messages.map((msg, index) => (
-                    <li key={index}>{msg.title}:{msg.data}</li>
-                ))}
-            </ul>
-            <select value={selector} onChange={(e) => SetSelector(e.target.value)}>
-                <option value="all">all</option>
-                {onlineList.map(item =>
-                    <option key={item.username} value={item.username}>{item.username}</option>
-                )}
-            </select>
         </div>
     );
 };

@@ -79,20 +79,32 @@
 //         </div>
 //     )
 // }
+
 import React, { useState } from 'react'
 import { Outlet, useNavigate } from "react-router-dom"
-import Chat from './Chat'
+import Chat from '../Chat/Chat'
+import styles from "./home.module.css"
 export default function Home() {
     const [open, setopen] = useState(false);
     const username = localStorage.getItem("username")
+    const navigate = useNavigate()
+
     return (
         <div>
-            <h1>Home</h1>
-            <h2>this is {username}</h2>
-            <button onClick={() => {
-                setopen(true)
-            }}>连接聊天室？</button>
-            {open && <Chat></Chat>}
+            <main className={styles.main}>
+                <h1>ChatRoom</h1>
+                <h2>Here is {username} 's channel</h2>
+                <div className={styles.logout} onClick={() => {
+                    navigate("/login")
+                    localStorage.removeItem("token")
+                    localStorage.removeItem("username")
+                }}>退出登录</div>
+                <button onClick={() => {
+                    setopen(!open)
+                }}>{open ? "Want to leave?" : "Want to connect?"}</button>
+                {open && <Chat></Chat>}
+            </main>
+
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom"
+import styles from "./login.module.css"
 
 axios.interceptors.response.use(function (response) {
     // console.log("请求成功后 ，第一个调用的方法")
@@ -37,14 +38,15 @@ export default function Login() {
     }
 
     return (
-        <div>Login
-            <form onSubmit={handleLogin} autoComplete="off">
-                <label>用户名：<input type='text' value={username} onInput={(e) => {
+        <div className={styles.main}>
+            <form onSubmit={handleLogin} autoComplete="off" className={styles.form}>
+                <h2>Login</h2>
+                <label><input type='text' value={username} onInput={(e) => {
                     setusername(e.target.value)
-                }}></input></label>
-                <label>密码：<input type='password' value={password} onInput={(e) => {
+                }} placeholder='用户名'></input></label>
+                <label><input type='password' value={password} onInput={(e) => {
                     setpassword(e.target.value)
-                }} autoComplete='new-password'></input></label>
+                }} autoComplete='new-password' placeholder='密码'></input></label>
                 <label><button type='submit'>登录</button></label>
             </form>
         </div>

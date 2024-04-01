@@ -1,0 +1,69 @@
+.main {
+    width: 80%;
+    height: 450px;
+    background-color: #1a8fbf;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.message {
+    * {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        /* display: inline-block; */
+    }
+
+    padding-bottom: 1px;
+    margin-bottom: 7px;
+
+    input {
+        vertical-align: middle;
+        width: 200px;
+        height: 40px;
+        outline: none;
+        border-radius: 15px 0 0 15px;
+        text-align: center;
+        background-color: #3190a3;
+        font-size: 25px;
+        line-height: 40px;
+    }
+
+    input::placeholder {
+        font-size: 15px;
+        color: rgb(184, 211, 236);
+        line-height: 40px;
+    }
+
+    select {
+        background-color: #3190a3;
+        vertical-align: middle;
+        height: 40px;
+        font-size: 20px;
+        outline: none;
+    }
+}
+
+.button {
+    padding: 0 !important;
+    vertical-align: middle;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 0 15px 15px 0 !important;
+}
+
+.return {
+    overflow: auto;
+    list-style: none;
+
+}
+
+.return::-webkit-scrollbar {
+    display: none;
+    /* 定义滚动条宽度 */
+}
