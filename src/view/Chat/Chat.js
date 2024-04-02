@@ -18,7 +18,7 @@ const Chat = () => {
     const navigate = useNavigate()
     useEffect(() => {
         // 连接到服务器
-        const newSocket = io(`ws://localhost:4000?token=${localStorage.getItem("token")}`); // 替换为你的服务器地址和端口
+        const newSocket = io(`ws://localhost:4000?token=${localStorage.getItem("token")}`);
         setSocket(newSocket);
 
         // 监听新消息事件
@@ -44,7 +44,7 @@ const Chat = () => {
         newSocket.on(WebSocketType.SingleChat, (msg) => {
             var title = msg.user ? msg.user.username : "广播"
             console.log(title + " : " + msg.data)
-            setMessages(prevMessages => [...prevMessages, { title: title, data: msg.data }]);
+            setMessages(prevMessages => [...prevMessages, { title: title, data: msg.data, single: true }]);
             scrollToBottom();
             setMessage("")
         })
@@ -79,7 +79,7 @@ const Chat = () => {
             // console.log("siliao")
             socket.emit(WebSocketType.SingleChat, createMessage(message, selector))
         }
-
+        setMessage("")
         // // 向服务器发送消息
         // if (message && socket) {
         //     socket.emit('chat message', message);
@@ -105,7 +105,9 @@ const Chat = () => {
 
             <ul className={styles.return} ref={listRef}>
                 {messages.map((msg, index) => (
-                    <li key={index}>&gt; {msg.title}  :  {msg.data}</li>
+                    msg.single ?
+                        <li key={index}>&gt; {msg.title} 给你偷偷发了  :  {msg.data}</li> :
+                        <li key={index}>&gt; {msg.title}  :  {msg.data}</li>
                 ))}
             </ul>
 

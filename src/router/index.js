@@ -12,6 +12,7 @@ export default function Myrouter() {
                     <Route path='chat' element={LazyLoad("Chat")}></Route>
                 </Route>
                 <Route path='/login' element={LazyLoad("Login/Login")}></Route>
+                <Route path='/signup' element={LazyLoad("Signup/Sign")}></Route>
                 <Route path="*" element={<Notfound></Notfound>} />
             </Routes>
         </BrowserRouter>
